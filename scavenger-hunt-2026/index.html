@@ -297,16 +297,39 @@ function checkTriple() {
   const w1 = document.getElementById('code-1').value.trim().toUpperCase();
   const w2 = document.getElementById('code-2').value.trim().toUpperCase();
   const w3 = document.getElementById('code-3').value.trim().toUpperCase();
-  if (`${w1} ${w2} ${w3}` === PASSWORD) {
-    showDecrypting();
-  } else {
-    const err = document.getElementById('error-msg');
-    err.innerHTML = '<p class="error">[ACCESS DENIED — AUTHORIZATION FAILED — RETRY]</p>';
-    document.getElementById('code-1').value = '';
-    document.getElementById('code-2').value = '';
-    document.getElementById('code-3').value = '';
-    document.getElementById('code-1').focus();
-  }
+  const phrase = `${w1} ${w2} ${w3}`;
+  
+  // Show validating screen
+  const el = document.getElementById('screen');
+  el.innerHTML = `<div class="decrypt-screen">
+    <div class="content">VALIDATING ACCESS CODES...</div>
+    <div class="progress-bar"><div class="progress-fill" id="val-fill"></div></div>
+    <div class="content dim" id="val-status">0%</div>
+  </div>`;
+
+  let progress = 0;
+  const fill = document.getElementById('val-fill');
+  const status = document.getElementById('val-status');
+  const interval = setInterval(() => {
+    progress += Math.random() * 20 + 10;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      setTimeout(() => {
+        if (phrase === PASSWORD) {
+          showDecrypting();
+        } else {
+          render('comms_locked');
+          setTimeout(() => {
+            const err = document.getElementById('error-msg');
+            if (err) err.innerHTML = '<p class="error">[ACCESS DENIED — AUTHORIZATION FAILED — RETRY]</p>';
+          }, 50);
+        }
+      }, 300);
+    }
+    fill.style.width = progress + '%';
+    status.textContent = Math.floor(progress) + '%';
+  }, 150);
 }
 
 function showDecrypting() {

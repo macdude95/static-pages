@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STARFLEET TERMINAL</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a0a;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 16px;
+}
+#terminal {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.header {
+  border-bottom: 1px solid #00ff88;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.header h1 { font-size: 16px; letter-spacing: 2px; }
+.header .version { font-size: 11px; color: #008844; }
+.content { white-space: pre-wrap; margin-bottom: 16px; }
+.menu-item {
+  display: block;
+  background: none;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.menu-item:hover, .menu-item:active {
+  background: #00ff8822;
+}
+.menu-item.locked { border-color: #ff4444; color: #ff4444; }
+.back-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 14px;
+  border: 1px solid #008844;
+  color: #008844;
+  background: none;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  cursor: pointer;
+}
+.back-btn:hover { border-color: #00ff88; color: #00ff88; }
+.input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.input-row input {
+  flex: 1;
+  background: #111;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 10px;
+  text-transform: uppercase;
+}
+.input-row input::placeholder { color: #006633; }
+.input-row button {
+  background: #00ff88;
+  color: #0a0a0a;
+  border: none;
+  padding: 10px 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.error { color: #ff4444; margin-top: 8px; }
+.success { color: #00ffcc; }
+.dim { color: #006633; }
+.warn { color: #ffaa00; }
+.separator { border-top: 1px solid #004422; margin: 12px 0; }
+@keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+.cursor::after { content: "▋"; animation: blink 1s infinite; }
+</style>
+</head>
+<body>
+<div id="terminal">
+  <div class="header">
+    <h1>STARFLEET INTELLIGENCE TERMINAL</h1>
+    <div class="version">v4.7.2 // CLASSIFICATION: TOP SECRET</div>
+  </div>
+  <div id="screen"></div>
+</div>
+<script>
+const screens = {
+  main: {
+    content: `WELCOME, ENSIGN CANTRELL.\n\nSelect a terminal function:`,
+    options: [
+      { label: '[1] Crew Manifest', target: 'crew' },
+      { label: '[2] Sensor Logs', target: 'sensors' },
+      { label: '[3] Comms Inbox (2 messages)', target: 'comms' },
+    ]
+  },
+  crew: {
+    content: `CREW MANIFEST — OPERATION GENESIS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nActive personnel assigned to this operation:`,
+    options: [
+      { label: '[1] Ensign Cantrell, C.', target: 'crew_chris' },
+      { label: '[2] Commander Cantrell, M.', target: 'crew_michael' },
+      { label: '[3] Lt. Reis, K.', target: 'crew_kyle' },
+      { label: '[4] Chief of Security Phantom', target: 'crew_phantom' },
+      { label: '[5] Intelligence Officer Vesper', target: 'crew_vesper' },
+    ],
+    back: 'main'
+  },
+  crew_chris: {
+    content: `PERSONNEL FILE — ENSIGN CANTRELL, C.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Ensign\nDESIGNATION: Field Operative\nASSIGNED COMPANIONS:\n  • Phantom (K9 Unit, Security Division)\n  • Vesper (Feline Unit, Intelligence Division)\nPSYCH PROFILE: Resourceful. Tenacious.\n  Suspicious of gum-based art installations.\nMISSION STATUS: ACTIVE\n\n<span class="dim">CLEARANCE CODE: GENESIS</span>`,
+    back: 'crew'
+  },
+  crew_michael: {
+    content: `PERSONNEL FILE — COMMANDER CANTRELL, M.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Commander\nDESIGNATION: Mission Oversight\nSPECIALIZATION: [REDACTED]\nHOBBIES: [REDACTED]\nNOTE: "Do not ask about his fabrication\n  devices. He will not stop talking."\nMISSION STATUS: OBSERVING\n\n<span class="dim">CLEARANCE CODE: PHANTOM</span>`,
+    back: 'crew'
+  },
+  crew_kyle: {
+    content: `PERSONNEL FILE — LT. REIS, K.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Lieutenant\nDESIGNATION: Reconnaissance & Logistics\nSTATION: Personal outpost — downtown sector\n\n<span class="warn">⚠ NOTABLE FLAGS:</span>\n  • Unauthorized fauna detected at station\n    Species: spined, nocturnal, palm-sized\n    Quantity: UNREASONABLE\n  • Acoustic device stockpile exceeds\n    regulation limits\n    Instruments catalogued: 14+\n    Justification filed: "They spark joy"\nMISSION STATUS: ACTIVE — AWAITING RENDEZVOUS\n\n<span class="dim">CLEARANCE CODE: QUILL</span>`,
+    back: 'crew'
+  },
+  crew_phantom: {
+    content: `PERSONNEL FILE — CHIEF OF SECURITY PHANTOM\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Chief of Security\nSPECIES: Canine (Standard Poodle, black)\nDESIGNATION: K9 Unit — Perimeter Defense\nKNOWN ALIASES: Flange, Flantum, Flea\nTEMPERAMENT: Vigilant. Enthusiastic. Will\n  alert crew to threats (real and imagined).\nASSESSMENT: Loyal beyond question. Responds\n  to treats with 100% compliance rate.\n\n<span class="dim">CLEARANCE CODE: FLANGE</span>`,
+    back: 'crew'
+  },
+  crew_vesper: {
+    content: `PERSONNEL FILE — INTELLIGENCE OFFICER VESPER\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Intelligence Officer\nSPECIES: Feline (Bengal)\nDESIGNATION: Covert Surveillance Unit\nKNOWN ALIASES: Beepies, Beeps, Flange (shared)\nSTATION: Classified observation post\n  (sub-level compartment, under stairs)\nTEMPERAMENT: Calculated. Aloof. Knows more\n  than she lets on.\nASSESSMENT: Operates independently. Does not\n  acknowledge chain of command.\n\n<span class="dim">CLEARANCE CODE: BEEPS</span>`,
+    back: 'crew'
+  },
+  sensors: {
+    content: `SENSOR LOG DATABASE\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRecent scans available for review:`,
+    options: [
+      { label: '[1] Bioscan — Sector 7G', target: 'sensor_bio' },
+      { label: '[2] Acoustic Analysis — Outpost Station', target: 'sensor_acoustic' },
+      { label: '[3] Anomaly Report — Cold Storage Bay', target: 'sensor_cold' },
+    ],
+    back: 'main'
+  },
+  sensor_bio: {
+    content: `BIOSCAN RESULTS — SECTOR 7G\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nLOCATION: Lt. Reis — personal outpost\nLIFEFORMS DETECTED:\n  • 1 humanoid (Lt. Reis, K.)\n  • 6+ unidentified small fauna\n    (spined, nocturnal, docile)\nTHREAT LEVEL: NONE\nCLASSIFICATION: <span class="success">ALLIED OUTPOST</span>\nATMOSPHERE: Habitable. Faint smell of coffee.\n\n<span class="dim">SENSOR TAG: SPIKE</span>`,
+    back: 'sensors'
+  },
+  sensor_acoustic: {
+    content: `ACOUSTIC ANALYSIS — OUTPOST STATION\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSOURCE: Lt. Reis — personal outpost\nINSTRUMENTS DETECTED:\n  guitar, bass, ukulele, banjo, keyboard,\n  kalimba, melodica, [7 ADDITIONAL — SEE\n  FULL INVENTORY]\nHARMONIC SIGNATURE: Chaotic but non-threatening\nASSESSMENT: Officer appears to be "collecting"\n  rather than "performing"\nCLASSIFICATION: <span class="warn">ANOMALOUS — NON-HOSTILE</span>\n\n<span class="dim">SENSOR TAG: SONIC</span>`,
+    back: 'sensors'
+  },
+  sensor_cold: {
+    content: `ANOMALY REPORT — COLD STORAGE BAY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<span class="dim">[This report references a previously\n completed objective. No action required.]</span>\n\nLOCATION: Home base — garage freezer unit\nFINDING: Xenomorph specimen (dormant)\nSTATUS: ✓ RESOLVED\n\n<span class="dim">SENSOR TAG: FROST</span>`,
+    back: 'sensors'
+  },
+  comms: {
+    content: `COMMS INBOX — 2 MESSAGES\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    options: [
+      { label: '✉ From: Comm Division — RE: Terminal Protocol', target: 'comms_instructions' },
+      { label: '🔒 From: [ENCRYPTED] — PRIORITY TRANSMISSION', target: 'comms_locked', locked: true },
+    ],
+    back: 'main'
+  },
+  comms_instructions: {
+    content: `FROM: Starfleet Intelligence — Comm Division\nTO: Ensign Cantrell, C.\nRE: Terminal Navigation Protocol\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nEnsign,\n\nPriority transmissions are secured with\nmulti-factor authentication.\n\nTo unlock, provide a <span class="success">THREE-WORD access phrase</span>.\n\nYour phrase is constructed as follows:\n\n  WORD 1: Clearance code of the officer\n          whose station triggered sensor\n          alerts\n\n  WORD 2: Sensor tag from the scan that\n          confirms an ALLIED outpost\n\n  WORD 3: Sensor tag matching the outpost's\n          most distinguishing acoustic\n          signature\n\nEnter all three words (space-separated)\nwhen prompted.\n\nGood luck.\n\n— Comm Division`,
+    back: 'comms'
+  },
+  comms_locked: {
+    content: `🔒 PRIORITY TRANSMISSION — LOCKED\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nThis message requires a 3-word access phrase.\n\nRefer to Comm Division instructions if needed.`,
+    input: true,
+    back: 'comms'
+  },
+  comms_unlocked: {
+    content: `<span class="success">🔓 ACCESS GRANTED</span>\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nPRIORITY TRANSMISSION — EYES ONLY\n\nEnsign, your next objective is clear.\n\n<span class="success">Report to the outpost of Lt. Reis\nimmediately. He is expecting you.</span>\n\nOnce inside, locate his archive and search\nfor the record of a lone officer who awoke\naboard an unknown vessel with no memory of\nhis mission — and against all odds, found\nan unlikely alien ally.\n\nYour next transmission is hidden within\nits pages.\n\nDo not delay. Time is not on our side.\n\n— Starfleet Intelligence`,
+    back: 'comms'
+  }
+};
+
+const PASSWORD = 'QUILL SPIKE SONIC';
+
+function render(screenId) {
+  const screen = screens[screenId];
+  const el = document.getElementById('screen');
+  let html = `<div class="content">${screen.content}</div>`;
+
+  if (screen.options) {
+    screen.options.forEach(opt => {
+      const cls = opt.locked ? 'menu-item locked' : 'menu-item';
+      html += `<button class="${cls}" onclick="render('${opt.target}')">${opt.label}</button>`;
+    });
+  }
+
+  if (screen.input) {
+    html += `<div class="input-row">
+      <input type="text" id="code-input" placeholder="ENTER ACCESS PHRASE" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <button onclick="checkCode()">SUBMIT</button>
+    </div>
+    <div id="error-msg"></div>`;
+  }
+
+  if (screen.back) {
+    html += `<button class="back-btn" onclick="render('${screen.back}')">[0] Back</button>`;
+  }
+
+  el.innerHTML = html;
+
+  if (screen.input) {
+    const input = document.getElementById('code-input');
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkCode(); });
+    input.focus();
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function checkCode() {
+  const input = document.getElementById('code-input');
+  const val = input.value.trim().toUpperCase();
+  if (val === PASSWORD) {
+    render('comms_unlocked');
+  } else {
+    const err = document.getElementById('error-msg');
+    err.innerHTML = '<p class="error">[ACCESS DENIED — AUTHORIZATION FAILED — RETRY]</p>';
+    input.value = '';
+    input.focus();
+  }
+}
+
+render('main');
+</script>
+</body>
+</html>

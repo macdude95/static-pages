@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>STARFLEET TERMINAL</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,6 +14,22 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   padding: 16px;
+  overflow-x: hidden;
+}
+/* Scanlines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 136, 0.03) 2px,
+    rgba(0, 255, 136, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
 }
 #terminal {
   max-width: 600px;
@@ -69,7 +85,7 @@ body {
   border: 1px solid #00ff88;
   color: #00ff88;
   font-family: 'Courier New', monospace;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
   text-transform: uppercase;
 }
@@ -92,7 +108,7 @@ body {
   border: 1px solid #00ff88;
   color: #00ff88;
   font-family: 'Courier New', monospace;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
   text-transform: uppercase;
 }
@@ -132,10 +148,50 @@ b { color: #44ffaa; font-weight: bold; }
 .separator { border-top: 1px solid #004422; margin: 12px 0; }
 @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 .cursor::after { content: "▋"; animation: blink 1s infinite; }
+/* Boot sequence */
+#boot-screen {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #0a0a0a;
+  z-index: 1000;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+#boot-text {
+  max-width: 600px;
+  width: 100%;
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #008844;
+  line-height: 1.8;
+}
+#boot-text .ok { color: #00ff88; }
+#boot-text .warn { color: #ffaa00; }
+/* Final message glow */
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 0px #00ff8800; }
+  50% { box-shadow: 0 0 30px #00ff8844; }
+  100% { box-shadow: 0 0 0px #00ff8800; }
+}
+.glow { animation: glow-pulse 2s ease-in-out; }
+.transmission-complete {
+  margin-top: 16px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s;
+  color: #008844;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+.transmission-complete.visible { opacity: 1; }
 </style>
 </head>
 <body>
-<div id="terminal">
+<div id="boot-screen"><div id="boot-text"></div></div>
+<div id="terminal" style="display:none">
   <div class="header">
     <h1>STARFLEET INTELLIGENCE TERMINAL</h1>
     <div class="version">v4.7.2 // CLASSIFICATION: TOP SECRET</div>
@@ -143,6 +199,47 @@ b { color: #44ffaa; font-weight: bold; }
   <div id="screen"></div>
 </div>
 <script>
+// ── Boot sequence ──
+const bootLines = [
+  { text: 'STARFLEET TERMINAL v4.7.2', delay: 300 },
+  { text: 'INITIALIZING SECURE CONNECTION...', delay: 600 },
+  { text: '', delay: 200 },
+  { text: 'Loading kernel modules.......... <span class="ok">[OK]</span>', delay: 700 },
+  { text: 'Mounting encrypted filesystem... <span class="ok">[OK]</span>', delay: 500 },
+  { text: 'Verifying biometric signature... <span class="ok">[OK]</span>', delay: 800 },
+  { text: 'Establishing subspace link...... <span class="ok">[OK]</span>', delay: 600 },
+  { text: 'Syncing mission database........ <span class="ok">[OK]</span>', delay: 500 },
+  { text: 'Checking crew manifest.......... <span class="ok">[OK]</span>', delay: 400 },
+  { text: 'Scanning for hostiles........... <span class="warn">[1 ANOMALY]</span>', delay: 900 },
+  { text: 'Quarantine protocols............ <span class="ok">[ACTIVE]</span>', delay: 400 },
+  { text: '', delay: 200 },
+  { text: 'ALL SYSTEMS NOMINAL.', delay: 500 },
+  { text: '', delay: 300 },
+  { text: '<span class="ok">WELCOME, ENSIGN CANTRELL.</span>', delay: 600 },
+  { text: 'Launching terminal interface...', delay: 800 },
+];
+
+function runBoot() {
+  const bootText = document.getElementById('boot-text');
+  let i = 0;
+  function nextLine() {
+    if (i >= bootLines.length) {
+      setTimeout(() => {
+        document.getElementById('boot-screen').style.display = 'none';
+        document.getElementById('terminal').style.display = '';
+        render('main');
+      }, 400);
+      return;
+    }
+    bootText.innerHTML += bootLines[i].text + '\n';
+    const delay = bootLines[i].delay;
+    i++;
+    setTimeout(nextLine, delay);
+  }
+  setTimeout(nextLine, 500);
+}
+
+// ── Screens ──
 const screens = {
   main: {
     content: `WELCOME, ENSIGN CANTRELL.\n\nSelect a terminal function:`,
@@ -241,14 +338,6 @@ function render(screenId) {
     });
   }
 
-  if (screen.input === true) {
-    html += `<div class="input-row">
-      <input type="text" id="code-input" placeholder="ENTER ACCESS PHRASE" autocomplete="off" autocapitalize="characters" spellcheck="false">
-      <button onclick="checkCode()">SUBMIT</button>
-    </div>
-    <div id="error-msg"></div>`;
-  }
-
   if (screen.input === 'triple') {
     html += `<div class="triple-input">
       <label class="dim">WORD 1:</label>
@@ -268,29 +357,11 @@ function render(screenId) {
 
   el.innerHTML = html;
 
-  if (screen.input === true) {
-    const input = document.getElementById('code-input');
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkCode(); });
-    input.focus();
-  }
   if (screen.input === 'triple') {
     document.getElementById('code-1').focus();
   }
 
   window.scrollTo(0, 0);
-}
-
-function checkCode() {
-  const input = document.getElementById('code-input');
-  const val = input.value.trim().toUpperCase();
-  if (val === PASSWORD) {
-    render('comms_unlocked');
-  } else {
-    const err = document.getElementById('error-msg');
-    err.innerHTML = '<p class="error">[ACCESS DENIED — AUTHORIZATION FAILED — RETRY]</p>';
-    input.value = '';
-    input.focus();
-  }
 }
 
 function checkTriple() {
@@ -299,7 +370,6 @@ function checkTriple() {
   const w3 = document.getElementById('code-3').value.trim().toUpperCase();
   const phrase = `${w1} ${w2} ${w3}`;
   
-  // Show validating screen
   const el = document.getElementById('screen');
   el.innerHTML = `<div class="decrypt-screen">
     <div class="content">VALIDATING ACCESS CODES...</div>
@@ -381,13 +451,19 @@ function typeMessage() {
     { text: '— Starfleet Intelligence', cls: 'dim' },
   ];
 
-  el.innerHTML = '<div class="content" id="typed-output"></div><button class="back-btn" onclick="render(\'comms\')" style="display:none" id="back-btn-typed">[0] Back</button>';
+  el.innerHTML = '<div class="content" id="typed-output"></div><div class="transmission-complete" id="tx-complete">[ TRANSMISSION COMPLETE — STARDATE 5.17.2026 ]</div><button class="back-btn" onclick="render(\'comms\')" style="display:none" id="back-btn-typed">[0] Back</button>';
   const output = document.getElementById('typed-output');
   let lineIdx = 0;
 
   function typeLine() {
     if (lineIdx >= lines.length) {
-      document.getElementById('back-btn-typed').style.display = '';
+      // Glow pulse on terminal
+      document.getElementById('terminal').classList.add('glow');
+      // Show transmission complete
+      setTimeout(() => {
+        document.getElementById('tx-complete').classList.add('visible');
+        document.getElementById('back-btn-typed').style.display = '';
+      }, 800);
       return;
     }
     const line = lines[lineIdx];
@@ -413,7 +489,8 @@ function typeMessage() {
   typeLine();
 }
 
-render('main');
+// Start boot sequence
+runBoot();
 </script>
 </body>
 </html>

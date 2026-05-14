@@ -115,6 +115,20 @@ body {
 .dim { color: #006633; }
 .warn { color: #ffaa00; }
 b { color: #44ffaa; font-weight: bold; }
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  border: 1px solid #00ff88;
+  margin-top: 12px;
+  background: #111;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #00ff88;
+  transition: width 0.2s;
+}
+.decrypt-screen { text-align: center; }
 .separator { border-top: 1px solid #004422; margin: 12px 0; }
 @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 .cursor::after { content: "▋"; animation: blink 1s infinite; }
@@ -284,7 +298,7 @@ function checkTriple() {
   const w2 = document.getElementById('code-2').value.trim().toUpperCase();
   const w3 = document.getElementById('code-3').value.trim().toUpperCase();
   if (`${w1} ${w2} ${w3}` === PASSWORD) {
-    render('comms_unlocked');
+    showDecrypting();
   } else {
     const err = document.getElementById('error-msg');
     err.innerHTML = '<p class="error">[ACCESS DENIED — AUTHORIZATION FAILED — RETRY]</p>';
@@ -293,6 +307,87 @@ function checkTriple() {
     document.getElementById('code-3').value = '';
     document.getElementById('code-1').focus();
   }
+}
+
+function showDecrypting() {
+  const el = document.getElementById('screen');
+  el.innerHTML = `<div class="decrypt-screen">
+    <div class="content"><span class="success">✓ CODES ACCEPTED</span>\n\nDECRYPTING TRANSMISSION...</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="content dim" id="decrypt-status">0%</div>
+  </div>`;
+  
+  let progress = 0;
+  const fill = document.getElementById('progress-fill');
+  const status = document.getElementById('decrypt-status');
+  const interval = setInterval(() => {
+    progress += Math.random() * 15 + 5;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      setTimeout(() => typeMessage(), 400);
+    }
+    fill.style.width = progress + '%';
+    status.textContent = Math.floor(progress) + '%';
+  }, 200);
+}
+
+function typeMessage() {
+  const el = document.getElementById('screen');
+  const lines = [
+    { text: '🔓 ACCESS GRANTED', cls: 'success' },
+    { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', cls: '' },
+    { text: 'PRIORITY TRANSMISSION — EYES ONLY', cls: '' },
+    { text: '', cls: '' },
+    { text: 'Ensign, your next objective is clear.', cls: '' },
+    { text: '', cls: '' },
+    { text: 'Report to the outpost of Lt. Reis', cls: 'success' },
+    { text: 'immediately. He is expecting you.', cls: 'success' },
+    { text: '', cls: '' },
+    { text: 'Once inside, locate his archive and search', cls: '' },
+    { text: 'for the record of a lone officer who awoke', cls: '' },
+    { text: 'aboard an unknown vessel with no memory of', cls: '' },
+    { text: 'his mission — and against all odds, found', cls: '' },
+    { text: 'an unlikely alien ally.', cls: '' },
+    { text: '', cls: '' },
+    { text: 'Your next transmission is hidden within', cls: '' },
+    { text: 'its records.', cls: '' },
+    { text: '', cls: '' },
+    { text: 'Do not delay. Time is not on our side.', cls: '' },
+    { text: '', cls: '' },
+    { text: '— Starfleet Intelligence', cls: 'dim' },
+  ];
+
+  el.innerHTML = '<div class="content" id="typed-output"></div><button class="back-btn" onclick="render(\'comms\')" style="display:none" id="back-btn-typed">[0] Back</button>';
+  const output = document.getElementById('typed-output');
+  let lineIdx = 0;
+
+  function typeLine() {
+    if (lineIdx >= lines.length) {
+      document.getElementById('back-btn-typed').style.display = '';
+      return;
+    }
+    const line = lines[lineIdx];
+    const span = document.createElement('span');
+    if (line.cls) span.className = line.cls;
+    output.appendChild(span);
+    
+    let charIdx = 0;
+    const text = line.text || ' ';
+    function typeChar() {
+      if (charIdx < text.length) {
+        span.textContent += text[charIdx];
+        charIdx++;
+        setTimeout(typeChar, 18 + Math.random() * 12);
+      } else {
+        output.appendChild(document.createTextNode('\n'));
+        lineIdx++;
+        setTimeout(typeLine, 60);
+      }
+    }
+    typeChar();
+  }
+  typeLine();
 }
 
 render('main');

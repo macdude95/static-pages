@@ -88,6 +88,7 @@ body {
 .success { color: #00ffcc; }
 .dim { color: #006633; }
 .warn { color: #ffaa00; }
+b { color: #44ffaa; font-weight: bold; }
 .separator { border-top: 1px solid #004422; margin: 12px 0; }
 @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 .cursor::after { content: "▋"; animation: blink 1s infinite; }
@@ -123,23 +124,23 @@ const screens = {
     back: 'main'
   },
   crew_chris: {
-    content: `PERSONNEL FILE — ENSIGN CANTRELL, C.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Ensign\nDESIGNATION: Field Operative\nASSIGNED COMPANIONS:\n  • Phantom (K9 Unit, Security Division)\n  • Vesper (Feline Unit, Intelligence Division)\nPSYCH PROFILE: Resourceful. Tenacious.\n  Suspicious of gum-based art installations.\nMISSION STATUS: ACTIVE\n\n<span class="dim">CLEARANCE CODE: GENESIS</span>`,
+    content: `PERSONNEL FILE — ENSIGN CANTRELL, C.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>RANK:</b> Ensign\n<b>DESIGNATION:</b> Field Operative\n<b>ASSIGNED COMPANIONS:</b>\n  • Phantom (K9 Unit, Security Division)\n  • Vesper (Feline Unit, Intelligence Division)\n<b>PSYCH PROFILE:</b> Resourceful. Tenacious.\n  Claims her music taste is "superior."\n  No supporting data found in Federation\n  archives.\n<b>MISSION STATUS:</b> ACTIVE\n\n<span class="dim">CLEARANCE CODE: GENESIS</span>`,
     back: 'crew'
   },
   crew_michael: {
-    content: `PERSONNEL FILE — COMMANDER CANTRELL, M.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Commander\nDESIGNATION: Mission Oversight\nSPECIALIZATION: [REDACTED]\nHOBBIES: [REDACTED]\nNOTE: "Do not ask about his fabrication\n  devices. He will not stop talking."\nMISSION STATUS: OBSERVING\n\n<span class="dim">CLEARANCE CODE: PHANTOM</span>`,
+    content: `PERSONNEL FILE — COMMANDER CANTRELL, M.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>RANK:</b> Commander\n<b>DESIGNATION:</b> Mission Oversight\n<b>SPECIALIZATION:</b> Hand-to-hand combat\n  simulation (antiquated Terran video\n  tournament circuit — "Melee" division)\n<b>HOBBIES:</b> Single-wheeled terrain vehicles\n  (custom-built, non-regulation, refuses\n  to use sanctioned Federation models)\n<b>NOTE:</b> "Do not ask about his fabrication\n  devices. He will not stop talking."\n<b>MISSION STATUS:</b> OBSERVING\n\n<span class="dim">CLEARANCE CODE: PHANTOM</span>`,
     back: 'crew'
   },
   crew_kyle: {
-    content: `PERSONNEL FILE — LT. REIS, K.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Lieutenant\nDESIGNATION: Reconnaissance & Logistics\nSTATION: Personal outpost — downtown sector\n\n<span class="warn">⚠ NOTABLE FLAGS:</span>\n  • Unauthorized fauna detected at station\n    Species: spined, nocturnal, palm-sized\n    Quantity: UNREASONABLE\n  • Acoustic device stockpile exceeds\n    regulation limits\n    Instruments catalogued: 14+\n    Justification filed: "They spark joy"\nMISSION STATUS: ACTIVE — AWAITING RENDEZVOUS\n\n<span class="dim">CLEARANCE CODE: QUILL</span>`,
+    content: `PERSONNEL FILE — LT. REIS, K.\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>RANK:</b> Lieutenant\n<b>DESIGNATION:</b> Reconnaissance & Logistics\n<b>STATION:</b> Personal outpost — downtown sector\n\n<span class="warn">⚠ NOTABLE FLAGS:</span>\n  • Unauthorized fauna detected at station\n    Species: spined, nocturnal, palm-sized\n    Quantity: UNREASONABLE\n  • Acoustic device stockpile exceeds\n    regulation limits\n    Instruments catalogued: 14+\n    Justification filed: "They spark joy"\n<b>MISSION STATUS:</b> ACTIVE — AWAITING RENDEZVOUS\n\n<span class="dim">CLEARANCE CODE: QUILL</span>`,
     back: 'crew'
   },
   crew_phantom: {
-    content: `PERSONNEL FILE — CHIEF OF SECURITY PHANTOM\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Chief of Security\nSPECIES: Canine (Standard Poodle, black)\nDESIGNATION: K9 Unit — Perimeter Defense\nKNOWN ALIASES: Flange, Flantum, Flea\nTEMPERAMENT: Vigilant. Enthusiastic. Will\n  alert crew to threats (real and imagined).\nASSESSMENT: Loyal beyond question. Responds\n  to treats with 100% compliance rate.\n\n<span class="dim">CLEARANCE CODE: FLANGE</span>`,
+    content: `PERSONNEL FILE — CHIEF OF SECURITY PHANTOM\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>RANK:</b> Chief of Security\n<b>SPECIES:</b> Canine (Moyen Poodle, black)\n<b>DESIGNATION:</b> K9 Unit — Sidewalk Oversight\n<b>KNOWN ALIASES:</b> Flange, Flantum, Flea\n<b>TEMPERAMENT:</b> Vigilant. Enthusiastic. Will\n  alert crew to threats (real and imagined).\n<b>ASSESSMENT:</b> Loyal beyond question. Responds\n  to treats with 100% compliance rate.\n\n<span class="dim">CLEARANCE CODE: FLANGE</span>`,
     back: 'crew'
   },
   crew_vesper: {
-    content: `PERSONNEL FILE — INTELLIGENCE OFFICER VESPER\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRANK: Intelligence Officer\nSPECIES: Feline (Bengal)\nDESIGNATION: Covert Surveillance Unit\nKNOWN ALIASES: Beepies, Beeps, Flange (shared)\nSTATION: Classified observation post\n  (sub-level compartment, under stairs)\nTEMPERAMENT: Calculated. Aloof. Knows more\n  than she lets on.\nASSESSMENT: Operates independently. Does not\n  acknowledge chain of command.\n\n<span class="dim">CLEARANCE CODE: BEEPS</span>`,
+    content: `PERSONNEL FILE — INTELLIGENCE OFFICER VESPER\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>RANK:</b> Intelligence Officer\n<b>SPECIES:</b> Feline (Bengal)\n<b>DESIGNATION:</b> Covert Surveillance Unit\n<b>KNOWN ALIASES:</b> Beepies, Beeps, Flange (shared)\n<b>STATION:</b> Classified observation post\n  (sub-level compartment, under stairs)\n<b>TEMPERAMENT:</b> Calculated. Aloof. Knows more\n  than she lets on.\n<b>ASSESSMENT:</b> Operates independently. Does not\n  acknowledge chain of command.\n\n<span class="dim">CLEARANCE CODE: BEEPS</span>`,
     back: 'crew'
   },
   sensors: {
@@ -152,15 +153,15 @@ const screens = {
     back: 'main'
   },
   sensor_bio: {
-    content: `BIOSCAN RESULTS — SECTOR 7G\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nLOCATION: Lt. Reis — personal outpost\nLIFEFORMS DETECTED:\n  • 1 humanoid (Lt. Reis, K.)\n  • 6+ unidentified small fauna\n    (spined, nocturnal, docile)\nTHREAT LEVEL: NONE\nCLASSIFICATION: <span class="success">ALLIED OUTPOST</span>\nATMOSPHERE: Habitable. Faint smell of coffee.\n\n<span class="dim">SENSOR TAG: SPIKE</span>`,
+    content: `BIOSCAN RESULTS — SECTOR 7G\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>LOCATION:</b> Lt. Reis — personal outpost\n<b>LIFEFORMS DETECTED:</b>\n  • 1 humanoid (Lt. Reis, K.)\n  • 6+ unidentified small fauna\n    (spined, nocturnal, docile)\n<b>THREAT LEVEL:</b> NONE\n<b>CLASSIFICATION:</b> <span class="success">ALLIED OUTPOST</span>\n<b>ATMOSPHERE:</b> Habitable. Faint smell of fudge.\n\n<span class="dim">SENSOR TAG: SPIKE</span>`,
     back: 'sensors'
   },
   sensor_acoustic: {
-    content: `ACOUSTIC ANALYSIS — OUTPOST STATION\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSOURCE: Lt. Reis — personal outpost\nINSTRUMENTS DETECTED:\n  piano, guitars, bongos, bass, glockenspiel,\n  penny whistles, [ADDITIONAL — SEE FULL\n  INVENTORY]\nHARMONIC SIGNATURE: Chaotic but non-threatening\nASSESSMENT: Officer appears to be "collecting"\n  rather than "performing"\nCLASSIFICATION: <span class="warn">ANOMALOUS — NON-HOSTILE</span>\n\n<span class="dim">SENSOR TAG: SONIC</span>`,
+    content: `ACOUSTIC ANALYSIS — OUTPOST STATION\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<b>SOURCE:</b> Lt. Reis — personal outpost\n<b>INSTRUMENTS DETECTED:</b>\n  piano, guitars, bongos, bass, glockenspiel,\n  penny whistles, [ADDITIONAL — SEE FULL\n  INVENTORY]\n<b>HARMONIC SIGNATURE:</b> Chaotic but non-threatening\n<b>ASSESSMENT:</b> Officer appears to be "collecting"\n  rather than "performing"\n<b>CLASSIFICATION:</b> <span class="warn">ANOMALOUS — NON-HOSTILE</span>\n\n<span class="dim">SENSOR TAG: SONIC</span>`,
     back: 'sensors'
   },
   sensor_cold: {
-    content: `ANOMALY REPORT — COLD STORAGE BAY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<span class="dim">[This report references a previously\n completed objective. No action required.]</span>\n\nLOCATION: Home base — garage freezer unit\nFINDING: Xenomorph specimen (dormant)\nSTATUS: ✓ RESOLVED\n\n<span class="dim">SENSOR TAG: FROST</span>`,
+    content: `ANOMALY REPORT — COLD STORAGE BAY\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n<span class="dim">[This report references a previously\n completed objective. No action required.]</span>\n\n<b>LOCATION:</b> Home base — garage freezer unit\n<b>FINDING:</b> Xenomorph specimen (dormant)\n<b>STATUS:</b> ✓ RESOLVED\n\n<span class="dim">SENSOR TAG: FROST</span>`,
     back: 'sensors'
   },
   comms: {

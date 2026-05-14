@@ -325,7 +325,7 @@ const screens = {
   }
 };
 
-const PASSWORD = 'QUILL SPIKE SONIC';
+const PASSWORD_WORDS = ['QUILL', 'SPIKE', 'SONIC'];
 
 function render(screenId) {
   const screen = screens[screenId];
@@ -369,7 +369,8 @@ function checkTriple() {
   const w1 = document.getElementById('code-1').value.trim().toUpperCase();
   const w2 = document.getElementById('code-2').value.trim().toUpperCase();
   const w3 = document.getElementById('code-3').value.trim().toUpperCase();
-  const phrase = `${w1} ${w2} ${w3}`;
+  const words = [w1, w2, w3].sort();
+  const valid = words.join(' ') === PASSWORD_WORDS.slice().sort().join(' ');
   
   const el = document.getElementById('screen');
   el.innerHTML = `<div class="decrypt-screen">
@@ -387,7 +388,7 @@ function checkTriple() {
       progress = 100;
       clearInterval(interval);
       setTimeout(() => {
-        if (phrase === PASSWORD) {
+        if (valid) {
           showDecrypting();
         } else {
           render('comms_locked');

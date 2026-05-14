@@ -382,7 +382,7 @@ function checkTriple() {
   const fill = document.getElementById('val-fill');
   const status = document.getElementById('val-status');
   const interval = setInterval(() => {
-    progress += Math.random() * 20 + 10;
+    progress += Math.random() * 10 + 5;
     if (progress >= 100) {
       progress = 100;
       clearInterval(interval);
@@ -400,7 +400,7 @@ function checkTriple() {
     }
     fill.style.width = progress + '%';
     status.textContent = Math.floor(progress) + '%';
-  }, 150);
+  }, 300);
 }
 
 function showDecrypting() {

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FIELD ADVISORY</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a0a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,0.03) 2px, rgba(0,255,136,0.03) 4px);
+  pointer-events: none;
+  z-index: 999;
+}
+.card {
+  max-width: 500px;
+  width: 100%;
+  border: 1.5px solid #00b450;
+  padding: 4px;
+}
+.card-inner {
+  border: 0.5px solid #00ff88;
+  padding: 32px 24px;
+  text-align: center;
+}
+.header-deco {
+  color: #ffaa00;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+h1 {
+  color: #ffaa00;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 6px 0;
+  letter-spacing: 3px;
+}
+.sep {
+  border: none;
+  border-top: 0.5px solid #00ff88;
+  margin: 16px 30px;
+}
+.body-text {
+  color: #00ff88;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.bold { font-weight: bold; }
+.highlight {
+  color: #ffcc00;
+  font-weight: bold;
+}
+.op-genesis {
+  color: #ffcc00;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+.sep-dim {
+  border: none;
+  border-top: 0.5px solid #00b450;
+  margin: 20px 50px;
+}
+.footer {
+  color: #006432;
+  font-size: 9px;
+  margin-top: 24px;
+  letter-spacing: 1px;
+  line-height: 2;
+}
+</style>
+</head>
+<body>
+<div class="card"><div class="card-inner">
+  <div class="header-deco">//////////////////////////////////////</div>
+  <h1>FIELD ADVISORY</h1>
+  <div class="header-deco">//////////////////////////////////////</div>
+
+  <hr class="sep">
+
+  <div class="body-text"><span class="bold">Specimen secured.
+Xenomorph in cryostasis.</span></div>
+
+  <br>
+
+  <div class="body-text">Navigation data for your remaining
+objectives has been uploaded, but the
+main console is overloaded. Systems
+are <span class="highlight">steaming.</span> Rerouting to the
+portable tactical display.
+
+Boot the device and locate</div>
+
+  <div class="op-genesis">OPERATION GENESIS</div>
+
+  <div class="body-text">in the mission library.</div>
+
+  <hr class="sep-dim">
+
+  <div class="body-text">Proceed to the coordinates marked
+on the tactical map.
+
+A field operative will provide further
+sustenance and briefing materials
+at the rendezvous point.</div>
+
+  <hr class="sep" style="margin-top: 28px;">
+  <div class="footer">STARFLEET INTELLIGENCE // CLASSIFICATION: TOP SECRET<br>STARDATE 05.04.2026 // OPERATION GENESIS</div>
+</div></div>
+</body>
+</html>

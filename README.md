@@ -14,3 +14,4 @@ Birthday scavenger hunt for Christiana (May 2026). Starfleet/sci-fi themed.
 |------|------|-------------|
 | Starfleet Terminal | `/scavenger-hunt-2026/t/` | Interactive menu-based puzzle. 3-word passcode unlocks priority message. |
 | Freezer Note | `/scavenger-hunt-2026/freezer.html` | Field advisory displayed via NFC tag at the frozen facehugger clue. |
+| Tactical Map | `/scavenger-hunt-2026/map.html` | Themed wrapper for Kyle's map, optimized for Steam Deck display. |

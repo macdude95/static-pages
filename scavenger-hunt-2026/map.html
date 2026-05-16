@@ -36,15 +36,16 @@ body {
 .map-container {
   flex: 1;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 0;
 }
 .map-container img {
-  width: 100%;
-  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 .corner {
   position: absolute;

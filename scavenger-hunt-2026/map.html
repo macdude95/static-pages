@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TACTICAL NAV — OPERATION GENESIS</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a0a;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px;
+  border-bottom: 1px solid #00ff8844;
+  background: #0a0a0a;
+  flex-shrink: 0;
+}
+.header h1 {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #00ff88;
+}
+.header .status {
+  font-size: 10px;
+  color: #008844;
+}
+.map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transform-origin: top left;
+}
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #00ff88;
+  border-style: solid;
+  pointer-events: none;
+}
+.corner.tl { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
+.corner.tr { top: 4px; right: 4px; border-width: 2px 2px 0 0; }
+.corner.bl { bottom: 4px; left: 4px; border-width: 0 0 2px 2px; }
+.corner.br { bottom: 4px; right: 4px; border-width: 0 2px 2px 0; }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 16px;
+  border-top: 1px solid #00ff8844;
+  background: #0a0a0a;
+  flex-shrink: 0;
+  font-size: 9px;
+  color: #006633;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>▲ TACTICAL NAVIGATION — OPERATION GENESIS</h1>
+  <span class="status">STARDATE 05.04.2026 // LIVE FEED</span>
+</div>
+<div class="map-container">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <iframe src="https://kylereis.me/scavenger/map" title="Tactical Map"></iframe>
+</div>
+<div class="footer">
+  <span>STARFLEET INTELLIGENCE</span>
+  <span>SECTOR: SAN LUIS OBISPO</span>
+  <span>CLASSIFICATION: TOP SECRET</span>
+</div>
+</body>
+</html>

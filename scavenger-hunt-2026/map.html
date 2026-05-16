@@ -36,14 +36,15 @@ body {
 .map-container {
   flex: 1;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.map-container iframe {
-  width: 50%;
-  height: 100%;
-  border: none;
-  margin: 0 auto;
-  display: block;
+.map-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 .corner {
   position: absolute;
@@ -79,7 +80,7 @@ body {
   <div class="corner tr"></div>
   <div class="corner bl"></div>
   <div class="corner br"></div>
-  <iframe src="https://kylereis.me/scavenger/map" title="Tactical Map"></iframe>
+  <img src="map.png" alt="Tactical Map">
 </div>
 <div class="footer">
   <span>STARFLEET INTELLIGENCE</span>
